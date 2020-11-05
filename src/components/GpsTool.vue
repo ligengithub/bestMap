@@ -1,5 +1,8 @@
 <template>
     <section class="home">
+        <div class="tool-head">
+            <!--              gps 工具-->
+        </div>
         <div class="tool-body">
             <div class="left-part">
                 <div class="left-item">
@@ -11,6 +14,9 @@
                 </div>
 
                 <div class="left-item">
+                    <div class="input-text-desc">
+                        <span>上传excel解析</span>
+                    </div>
                     <el-upload
                             class="upload"
                             :on-preview="handlePreview"
@@ -21,30 +27,46 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :http-request="analysExcel"
                             :before-upload="beforeUpload">
-                        <el-button type="primary" size="small" style="width: 90px">上传<i
+                        <el-button type="primary" size="small">上传<i
                                 class="el-icon-upload el-icon--right"></i>
                         </el-button>
-                        <el-button class="down-btn" type="primary" size="small" style="width: 90px"
-                                   @click="downTemplate">下载模板<i
+                        <el-button class="down-btn" type="primary" size="small"
+                                   @click="downTemplate">下载<i
                                 class="el-icon-download el-icon--right"></i>
+                        </el-button>
+                        <el-button class="down-btn" type="primary" size="small"
+                                   @click="downTemplate">预览<i
+                                class="el-icon-view el-icon--right"></i>
                         </el-button>
 
                         <div slot="tip" class="el-upload__tip">只能上传excel/csv文件</div>
                     </el-upload>
                 </div>
+
                 <div class="left-item">
-                    <el-button size="small" type="primary" style="width: 90px" @click="plotLineByString">解析</el-button>
-                    <el-button size="small" type="primary" style="width: 90px" @click="clearMarkAndLine">清除标记
-                    </el-button>
+                    <div class="input-text-desc">
+                        <span>地图绘制</span>
+                    </div>
+                    <div>
+                        <el-button class="down-btn" type="primary" size="small"
+                                   @click="downTemplate">开始
+                        </el-button>
+                        <el-button class="down-btn" type="primary" size="small"
+                                   @click="downTemplate">删除尾节点
+                        </el-button>
+                        <el-button class="down-btn" type="primary" size="small"
+                                   @click="downTemplate">导出数据<i
+                                class="el-icon-down el-icon--right"></i>
+                        </el-button>
+                    </div>
+
                 </div>
+
                 <div class="left-item">
                     <div class="input-text-desc">
                         <span>
                         输入经纬度查询
                         </span>
-                        <el-button size="small" style="width: 60px;margin-left: 3rem" type="primary"
-                                   @click="clearGpsString"> 清空
-                        </el-button>
                     </div>
                     <div>
                         <el-input
@@ -55,7 +77,20 @@
                                 v-model="gpsString">
                         </el-input>
                     </div>
+                </div>
 
+                <div class="left-item">
+                    <el-button size="small" type="primary" @click="plotLineByString">解析</el-button>
+                    <el-button size="small" type="primary"
+                               @click="clearGpsString"> 清空输入
+                    </el-button>
+                    <el-button size="small" type="primary" style="width: 90px" @click="clearMarkAndLine">清除标记
+                    </el-button>
+                </div>
+                <div class="left-item align-lift">
+                    <div>
+                        <span>统计结果:</span>
+                    </div>
                     <div class="anals-result">
                         <div class="result-item">
                             <span>点个数:</span> <span>{{linePath.length}}</span>
@@ -67,39 +102,12 @@
                             <span>起点终点距离(单位:米):</span> <span>{{startEndLen}}</span>
                         </div>
                     </div>
-
                 </div>
 
             </div>
-            <div class="right-part">
+            <div class="middle-part">
                 <div class="map-wrapper">
-                    <el-amap :vid="mapDiv" :center="center" ref="map" :zoom="zoom"
-                             :amap-manager="amapManager" :events="mapEvent">
-                        <div v-if="this.benginMarker.position.length!==0">
-                            <el-amap-marker vid="'marker-begin'"
-                                            :position="benginMarker.position"
-                                            :label="benginMarker.label"
-                            >
-                            </el-amap-marker>
-                        </div>
-                        <div v-if="this.endMarker.position.length!==0">
-                            <el-amap-marker vid="'marker-end'"
-                                            :position="endMarker.position"
-                                            :label="endMarker.label">
-                            </el-amap-marker>
-                            <el-amap-circle-marker
-                                    :key="marker.index"
-                                    v-for="marker in markers"
-                                    :center="marker.center"
-                                    :radius="marker.radius"
-                                    :fill-color="marker.fillColor"
-                                    :fill-opacity="marker.fillOpacity"
-                                    :events="marker.events"
-                                    :strokeWight="0">
-                            </el-amap-circle-marker>
-                        </div>
-                        <el-amap-polyline :path="linePath" strokeColor="#f5222d"></el-amap-polyline>
-                    </el-amap>
+                    <div id="mapDiv"></div>
                 </div>
                 <!--                <div class="map-wrapper">-->
                 <!--&lt;!&ndash;                    <GmapMap ref="mapRef" :center = "{lat:31.197446,lng:112.59982}" :zoom="7">&ndash;&gt;-->
@@ -108,48 +116,29 @@
                 <!--                    </baidu-map>-->
                 <!--                </div>-->
             </div>
+            <div class="right-part"></div>
         </div>
     </section>
 </template>
 
 <script>
     // global AMap
-    import VueAMap from "vue-amap";
     import {calculateLineDistance} from "../util/util";
     import XLSX from 'xlsx'
 
-    const amapManager = new VueAMap.AMapManager();
-
     export default {
         name: "GpsTool",
-        components: {
-        },
+        components: {},
         data() {
             return {
                 mapRadio: '高德',
                 mapDiv: "mapDiv",
-                amapManager: amapManager,
                 center: [112.59982, 31.197446],
                 zoom: 16,
                 //输入的gpsString
                 gpsString: '',
-                mapEvent: {
-                },
+                mapEvent: {},
                 linePath: [],
-                benginMarker: {
-                    position: [],
-                    label: {
-                        content: "起点",
-                        offset: [-5, -22]
-                    }
-                },
-                endMarker: {
-                    position: [],
-                    label: {
-                        content: "终点",
-                        offset: [-5, -22]
-                    }
-                },
                 markers: [],
                 //总点数和总长度
                 pointCnt: 0,
@@ -162,7 +151,7 @@
             }
         },
         methods: {
-            handleRemove( ) {
+            handleRemove() {
                 this.clearMarkAndLine();
             },
             handlePreview(file) {
@@ -177,7 +166,6 @@
                 for (var i = 0; i < this.linePath.length - 1; i++) {
                     let p1 = this.linePath[i];
                     let p2 = this.linePath[i + 1];
-                    // let distance = parseFloat(AMap.GeometryUtil.distance(p1, p2).toFixed(2));
                     let distance = calculateLineDistance(p1, p2);
                     total += distance;
                 }
@@ -188,9 +176,7 @@
                 return distance;
             },
             setBeginAndEndMarker(linePath) {
-                console.log(linePath);
                 let length = linePath.length;
-                console.log(linePath[length - 1]);
                 this.center = linePath[0];
                 this.benginMarker = {
                     position: linePath[0],
@@ -209,7 +195,7 @@
 
                 if (linePath.length >= 3) {
 
-                    linePath.forEach((p,index) => {
+                    linePath.forEach((p, index) => {
                         let temp = {};
                         temp.center = p;
                         temp.fillColor = 'rgba(0,0,255,1)';
@@ -315,8 +301,6 @@
             beforeUpload(file) {
                 const typeList = ["xls", "xlsx", "csv"];
                 const extension = file.name.substr(file.name.lastIndexOf(".") + 1);
-
-                console.log(extension);
                 if (!typeList.includes(extension)) {
                     this.$message.error("文件格式不正确");
                     return false;
@@ -347,24 +331,47 @@
 
 <style scoped>
 
+    .home {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .tool-head {
+        height: 90px;
+    }
+
+    .tool-body {
+        display: flex;
+    }
+
     .map-wrapper {
-        width: 1200px;
-        height: 700px;
+        height: 800px;
         flex: 1;
-        background: pink;
     }
 
     .left-part {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        flex: 4;
+        align-items: center;
+        flex: 1;
+        padding: 5px;
     }
+
+    .middle-part {
+        padding-left: 5px;
+        flex: 6;
+    }
+
+    .right-part {
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+    }
+
 
     .input-text {
         padding: 5px;
         width: 250px;
-        height: 300px;
     }
 
     .tool-body {
@@ -374,16 +381,12 @@
     .input-text-desc {
         padding-top: 2rem;
         padding-left: 1rem;
-        font-weight: bolder;
-        font-size: 15px;
-    }
-
-    .right-part {
-        padding-left: 5px;
+        font-size: 14px;
+        text-align: start;
     }
 
     .anals-result {
-        padding-top: 2rem;
+        padding-top: 10px;
     }
 
     .result-item {
@@ -391,8 +394,7 @@
     }
 
     .result-item > span {
-        font-size: 17px;
-        font-weight: bolder;
+        font-size: 14px;
     }
 
     .left-item {
@@ -400,13 +402,13 @@
         padding: 2rem 5px 5px;
     }
 
-    .down-btn {
-        margin-left: 10px;
+    .align-lift {
+        padding-left: 1rem;
+        text-align: start;
     }
 
-    .left-part {
-        display: flex;
-        flex-direction: column;
+    .down-btn {
+        margin-left: 10px;
     }
 
 </style>
