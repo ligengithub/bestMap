@@ -400,6 +400,8 @@
     .left-item {
         width: 100%;
         padding: 2rem 5px 5px;
+        display: flex;
+        justify-content: center;
     }
 
     .align-lift {

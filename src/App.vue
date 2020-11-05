@@ -1,34 +1,30 @@
 <template>
-  <div id="app">
-    123
-    <p>
-      <!-- 使用 router-link 组件来导航. -->
-      <!-- 通过传入 `to` 属性指定链接. -->
-      <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-      <router-link to="/map/baidu">Go to baidu</router-link>
-      <router-link to="/map/gaode">Go to gaode</router-link>
-    </p>
-    <div style="width: 100px;height: 100px;background: red">
-      <router-view></router-view>
+  <div class="home">
+    <div>
+      <Header>
+      </Header>
     </div>
-<!--    <GpsTool/>-->
+    <div class = "middle">
+      <LeftPart></LeftPart>
+      <router-view></router-view>
+      <RightPart></RightPart>
+    </div>
+    <div>
+      <Bottom>
+      </Bottom>
+    </div>
   </div>
 </template>
 
 <script>
-import GpsTool from "./components/GpsTool";
-import Bmap from "./view/Bmap";
-import Gmap from "./view/Gmap";
-import Amap from "./view/Amap";
-
+// import GpsTool from "./components/GpsTool";
+import LeftPart from "./components/LeftPart";
+import Bottom from "./components/Bottom";
+import Header from "./components/Header";
+import RightPart from "./components/RightPart";
 export default {
-  name: 'App',
-  components: {
-    GpsTool,
-    Bmap,
-    Gmap,
-    Amap
-  }
+  name: "App",
+  components: {RightPart, LeftPart,Bottom,Header}
 }
 </script>
 
@@ -39,6 +35,19 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 10px;
+  margin-top: 5px;
 }
+  .home{
+    padding: 5px;
+  }
+
+  .middle{
+    display: flex;
+  }
+
+  .mapContainer{
+    border-radius: 10px;
+    flex: 1;
+    margin: 3px;
+  }
 </style>
