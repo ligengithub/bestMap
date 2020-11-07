@@ -9,17 +9,18 @@ import VueRouter from "vue-router";
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+    return originalPush.call(this, location).catch(err => err)
+};
+
 
 Vue.use(VueRouter);
 
-Vue.use(Element, { size: 'small', zIndex: 3000 });
+Vue.use(Element, {size: 'small', zIndex: 3000});
 const router = new VueRouter({routes});
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 new Vue({
-  render: h => h(App),router,
+    render: h => h(App), router,
 }).$mount('#app');

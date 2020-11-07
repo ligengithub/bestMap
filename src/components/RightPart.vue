@@ -1,11 +1,16 @@
 <template>
-    <div class="right-part">right</div>
+    <div class="right-part"></div>
 
 </template>
 
 <script>
+    import EventBus from "../event_bus";
+
     export default {
-        name: "RightPart"
+        name: "RightPart",
+        mounted() {
+
+        }
     }
 </script>
 
@@ -14,7 +19,7 @@
     .right-part {
         margin: 3px;
         width: 100px;
-        border: yellow 3px solid
+        /*border: yellow 3px solid*/
     }
 
 </style>

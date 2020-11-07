@@ -409,8 +409,8 @@
         text-align: start;
     }
 
-    .down-btn {
-        margin-left: 10px;
-    }
+    /*.down-btn {*/
+    /*    margin-left: 10px;*/
+    /*}*/
 
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="left-part">
-        <div class="left-item">
+        <div class="left-item row-flex-mid">
             <el-radio-group v-model="mapRadio" size="mini" @change="changeMap">
                 <el-radio-button label='1'>高德</el-radio-button>
                 <el-radio-button label='2'>百度</el-radio-button>
@@ -12,50 +12,53 @@
             <div class="input-text-desc">
                 <span>上传excel解析(只能上传excel/csv文件)</span>
             </div>
-            <el-upload
-                    class="upload"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    multiple
-                    :limit=1
-                    :file-list="fileList"
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    :http-request="analysExcel"
-                    :before-upload="beforeUpload">
-            </el-upload>
-            <div class="btn-list">
-                <el-button type="primary" size="small">上传<i
-                        class="el-icon-upload el-icon--right"></i>
-                </el-button>
-                <el-button class="down-btn" type="primary" size="small"
-                           @click="downTemplate">下载<i
-                        class="el-icon-download el-icon--right"></i>
-                </el-button>
-                <el-button class="down-btn" type="primary" size="small"
-                           @click="downTemplate">预览<i
-                        class="el-icon-view el-icon--right"></i>
-                </el-button>
-            </div>
-        </div>
-
-        <div class="left-item">
-            <div class="input-text-desc">
-                <span>地图绘制</span>
-            </div>
-            <div class="btn-list">
-                <el-button class="down-btn" type="primary" size="small"
-                           @click="downTemplate">开始画线
-                </el-button>
-                <el-button class="down-btn" type="primary" size="small"
-                           @click="downTemplate">删除尾节点
-                </el-button>
-                <el-button class="down-btn" type="primary" size="small"
-                           @click="downTemplate">导出数据<i
-                        class="el-icon-down el-icon--right"></i>
-                </el-button>
+            <div style="display: flex;margin-left: 2rem">
+                <el-upload
+                        class="upload"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        multiple
+                        :limit=1
+                        :file-list="fileList"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :http-request="analysExcel"
+                        :before-upload="beforeUpload">
+                    <el-button type="primary" size="small" class="m-l-10 m-t-10">上传excel<i
+                            class="el-icon-upload el-icon--right"></i>
+                    </el-button>
+                </el-upload>
             </div>
 
         </div>
+        <div class="left-item row-flex-mid">
+            <el-button class="m-l-10 m-t-10" type="primary" size="small"
+                       @click="downTemplate">下载模板<i
+                    class="el-icon-download el-icon--right"></i>
+            </el-button>
+            <el-button class="m-t-10" type="primary" size="small"
+                       @click="downTemplate">预览excel格式<i
+                    class="el-icon-view el-icon--right"></i>
+            </el-button>
+        </div>
+
+        <!--        <div class="left-item">-->
+        <!--            <div class="input-text-desc">-->
+        <!--                <span>地图绘制</span>-->
+        <!--            </div>-->
+        <!--            <div class="btn-list">-->
+        <!--                <el-button class="down-btn" type="primary" size="small"-->
+        <!--                           @click="downTemplate">开始画线-->
+        <!--                </el-button>-->
+        <!--                <el-button class="down-btn" type="primary" size="small"-->
+        <!--                           @click="downTemplate">删除尾节点-->
+        <!--                </el-button>-->
+        <!--                <el-button class="down-btn" type="primary" size="small"-->
+        <!--                           @click="downTemplate">导出数据<i-->
+        <!--                        class="el-icon-down el-icon&#45;&#45;right"></i>-->
+        <!--                </el-button>-->
+        <!--            </div>-->
+
+        <!--        </div>-->
 
         <div class="left-item">
             <div class="input-text-desc">
@@ -69,7 +72,7 @@
                             class="input-text"
                             type="textarea"
                             :rows="12"
-                            placeholder="格式如下 :  112.59982,31.197446, 112.59423,31.197646, 112.59124,31.197246, 112.59382,31.197546"
+                            placeholder="格式如下 :  112.59982,31.197446, 113.58782,32.196446, 114.57682,33.195446, 115.56582,34.194446, 116.55482,35.193446, 117.54382,36.192446"
                             v-model="gpsString">
                     </el-input>
                 </div>
@@ -79,11 +82,11 @@
 
         <div class="left-item">
             <div class="btn-list">
-                <el-button size="small" type="primary" @click="plotLineByString">解析</el-button>
+                <el-button size="small" type="primary" @click="plotLineByString">解析数据</el-button>
                 <el-button size="small" type="primary"
                            @click="clearGpsString"> 清空输入
                 </el-button>
-                <el-button size="small" type="primary" style="width: 90px" @click="clearMarkAndLine">清除标记
+                <el-button type="danger" style="margin-left: 20px" @click="clearMarkAndLine">清空标记
                 </el-button>
             </div>
 
@@ -109,7 +112,29 @@
 </template>
 
 <script>
+    import EventBus from '../event_bus'
+    import XLSX from 'xlsx'
+    import {calculateLineDistance} from "../util/util";
+
     export default {
+
+        name: "LeftPart",
+        data() {
+            return {
+                mapRadio: '1',
+                //输入的gpsString
+                gpsString: '112.59982,31.197446, 113.58782,32.196446, 114.57682,33.195446, 115.56582,34.194446, 116.55482,35.193446, 117.54382,36.192446',
+                pointCnt: 0,
+                totalLength: 0,
+                startEndLen: 0,
+                //excel
+                fileList: [],
+                importData: [],
+                wb: '',
+                linePath: [],
+            }
+        },
+
         created() {
             console.log("create")
         },
@@ -129,9 +154,12 @@
                 }
             },
 
-
+            // 删除上传的文件
             handleRemove() {
                 this.clearMarkAndLine();
+                this.linePath = [];
+                this.startEndLen = 0;
+                this.totalLength = 0;
             },
             handlePreview(file) {
                 console.log(file);
@@ -140,10 +168,8 @@
             analysExcel(content) {
                 // 先清空 linePath
                 this.linePath = [];
-
                 var reader = new FileReader();
                 reader.readAsBinaryString(content.file);
-
 
                 reader.onload = (e) => {
                     let data = e.target.result; //获取上传的文件内容
@@ -164,9 +190,14 @@
                         let temp = [parseFloat(raw.lng), parseFloat(raw.lat)];
                         this.linePath.push(temp)
                     });
-                    // 设置marcker
-                    this.setBeginAndEndMarker(this.linePath);
-                    // 计算总距离
+
+                    let gpsData = {
+                        center: this.linePath[0],
+                        linePath: this.linePath,
+                        zoom: 17,
+                    };
+                    console.log(gpsData);
+                    EventBus.$emit("gpsData", gpsData);
                     this.totalLength = this.getPathLen(this.linePath);
                     this.startEndLen = this.getStartEndLen(this.linePath);
                 }
@@ -182,6 +213,7 @@
                     return true;
                 }
             },
+
             // 下载模板
             downTemplate() {
                 let a = document.createElement('a');
@@ -209,35 +241,47 @@
                 for (let i = 0; i < longitudes.length; i++) {
                     points.push([longitudes[i], latitudes[i]])
                 }
-                this.linePath = points;
-                this.setMarker(points)
+
+                let gpsData = {
+                    center: points[0],
+                    linePath: points,
+                    zoom: 17,
+                };
+                // console.log(gpsData)
+                EventBus.$emit("gpsData", gpsData);
             },
+            //清除输入
             clearGpsString() {
                 this.gpsString = '';
             },
+            //清除地图标记
             clearMarkAndLine() {
                 // 清除线
+                console.log("clwarMarker");
+                let data = {flag: true};
+                EventBus.$emit("clearMapFlag", data);
                 this.linePath = [];
-                this.setMarker(this.linePath);
+                this.startEndLen = 0;
                 this.totalLength = 0;
+                this.handlePreview();
             },
-        },
-        name: "LeftPart",
-        data() {
-            return {
-                mapRadio: '1',
-                //输入的gpsString
-                gpsString: '',
-                pointCnt: 0,
-                totalLength: 0,
-                startEndLen: 0,
-                //excel
-                fileList: [],
-                importData: [],
-                wb: '',
-                linePath: [],
+            // 获取路径距离
+            getPathLen(path) {
+                let total = 0;
+                for (var i = 0; i < path.length - 1; i++) {
+                    let p1 = path[i];
+                    let p2 = path[i + 1];
+                    let distance = calculateLineDistance(p1, p2);
+                    total += distance;
+                }
+                return total.toFixed(2);
+            },
+            getStartEndLen(path) {
+                let distance = calculateLineDistance(path[0], path[path.length - 1]).toFixed(2);
+                return distance;
             }
-        }
+        },
+
     }
 </script>
 
@@ -269,7 +313,7 @@
     }
 
     .input-text-desc {
-        padding-left: 1rem;
+        margin-left: 3rem;
         font-size: 12px;
         text-align: start;
     }
@@ -287,6 +331,14 @@
     .row-flex-mid {
         display: flex;
         justify-content: center;
+    }
+
+    .m-l-10 {
+        margin-left: 10px;
+    }
+
+    .m-t-10 {
+        margin-top: 10px;
     }
 
 

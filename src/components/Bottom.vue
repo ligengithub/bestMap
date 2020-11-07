@@ -14,8 +14,8 @@
     .bottom-part {
         margin: 3px;
         display: flex;
-        height: 150px;
-        border: yellow 3px solid;
+        height: 120px;
+        /*border: yellow 3px solid;*/
     }
 
 </style>
