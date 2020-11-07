@@ -1,5 +1,5 @@
 <template>
-    <div class="mapContainer" id="container">Amap</div>
+    <div class="mapContainer" id="container"></div>
 </template>
 
 <script>
@@ -20,14 +20,15 @@
                 ployline: {},
                 lineMarkers: [],
                 startMarker: {},
-                endMarker: {}
+                endMarker: {},
+                totalLength:0,
+                startEndLen:0
             }
         },
         created() {
 
         },
         mounted() {
-            console.log("-----------mount---------------")
             this.map = new AMap.Map('container', {
                 center: [116.40420669, 39.90887389],
                 zoom: 14
@@ -69,9 +70,9 @@
                 // 画线
                 this.plotLine(map, pathline);
                 // // 画起点和终点
-                // this.plotStartEndMarker(map, pathline[0], pathline[pathline.length - 1]);
-                // // 画路径上的点
-                // this.plotMarker(map, pathline);
+                this.plotStartEndMarker(map, pathline[0], pathline[pathline.length - 1]);
+                // 画路径上的点
+                this.plotMarker(map, pathline);
             },
 
             plotLine(map, path) {
@@ -126,7 +127,7 @@
 
                 map.add(startMarker);
                 map.add(endMarker);
-            }
+            },
         }
 
     }

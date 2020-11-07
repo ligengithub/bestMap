@@ -20,7 +20,9 @@
                 ployline: {},
                 lineMarkers: [],
                 startMarker: {},
-                endMarker: {}
+                endMarker: {},
+                totalLength:0,
+                startEndLen:0
             }
         },
 
@@ -59,7 +61,6 @@
         },
         methods: {
             plotLineAndMarker(map, path) {
-                console.log("-----------1------------")
                 let pathline = [];
                 path.forEach(p => {
                         pathline.push(new BMap.Point(parseFloat(p[0]), parseFloat(p[1])));
@@ -76,7 +77,7 @@
             plotLine(map, path) {
                 let polyline = new BMap.Polyline(
                     path, {
-                        borderWeight: 2, // 线条宽度，默认为 1
+                        strokeWeight: 2, // 线条宽度，默认为 1
                         strokeColor: 'red', // 线条颜色
                     });
                 this.ployline = polyline;
@@ -115,7 +116,7 @@
 
                 map.addOverlay(startMarker);
                 map.addOverlay(endMarker);
-            }
+            },
         }
     }
 </script>
