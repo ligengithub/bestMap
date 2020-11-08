@@ -217,12 +217,17 @@
 
             // 下载模板
             downTemplate() {
-                let a = document.createElement('a');
-                a.href = '/temp/gpsTemplate.xlsx';
-                a.download = "gps数据导入模板";
-                a.click();
+                alert("还没做好哦,请下载模板")
+                // let a = document.createElement('a');
+                // a.href = '/temp/gpsTemplate.xlsx';
+                // a.download = "gps数据导入模板";
+                // a.click();
             },
             plotLineByString() {
+                if (this.linePath.length>0){
+                    this.clearMarkAndLine()
+                }
+
                 let gpsString = this.gpsString;
                 if (gpsString.length === 0) {
                     this.$message.error("输入数据为空");
@@ -249,10 +254,13 @@
                     zoom: 17,
                 };
                 // console.log(gpsData)
-                EventBus.$emit("gpsData", gpsData);
-                this.linePath = points;
-                this.totalLength = this.getPathLen(points);
-                this.startEndLen = this.getStartEndLen(points);
+                setTimeout(()=>{
+                    EventBus.$emit("gpsData", gpsData);
+                    this.linePath = points;
+                    this.totalLength = this.getPathLen(points);
+                    this.startEndLen = this.getStartEndLen(points);
+                },100);
+
             },
             //清除输入
             clearGpsString() {
@@ -267,7 +275,6 @@
                 this.linePath = [];
                 this.startEndLen = 0;
                 this.totalLength = 0;
-                this.handlePreview();
             },
             // 获取路径距离
             getPathLen(path) {

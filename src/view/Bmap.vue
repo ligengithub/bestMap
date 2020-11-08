@@ -52,10 +52,11 @@
             clearMapFlag(data) {
                 console.log("clearMap", data);
                 if (data.flag) {
-                    this.map.removeOverlay(this.startMarker);
-                    this.map.removeOverlay(this.endMarker);
-                    this.map.removeOverlay(this.lineMarkers);
-                    this.map.removeOverlay(this.ployline);
+                    // this.map.removeOverlay(this.startMarker);
+                    // this.map.removeOverlay(this.endMarker);
+                    // this.map.removeOverlay(this.lineMarkers);
+                    // this.map.removeOverlay(this.ployline);
+                    this.map.clearOverlays();
                 }
             }
         },

@@ -45,10 +45,11 @@
             },
             clearMapFlag(data) {
                 if (data.flag) {
-                    this.map.remove(this.startMarker);
-                    this.map.remove(this.endMarker);
-                    this.map.remove(this.lineMarkers);
-                    this.map.remove(this.ployline);
+                    this.map.clearMap();
+                    // this.map.remove(this.startMarker);
+                    // this.map.remove(this.endMarker);
+                    // this.map.remove(this.lineMarkers);
+                    // this.map.remove(this.ployline);
                 }
             }
         },

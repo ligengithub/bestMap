@@ -29,7 +29,7 @@
         mounted() {
             let map = new google.maps.Map(document.getElementById("container"), {
                 center: {lat: 36.964, lng: -122.015},
-                zoom: 14,
+                zoom: 15,
             });
             this.map = map;
         },
@@ -47,6 +47,7 @@
             clearMapFlag(data) {
                 console.log("clearMap", data);
                 if (data.flag) {
+                    // this.map.clearOverlays();
                     this.startMarker.setMap(null);
                     this.endMarker.setMap(null);
                     this.lineMarkers.forEach(m => {
@@ -104,7 +105,7 @@
                         url:point,
                         size: new google.maps.Size(20, 32),
                         origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(0, 18),
+                        anchor: new google.maps.Point(5, 10),
                     };
 
                     let marker = new google.maps.Marker({
