@@ -15,14 +15,14 @@
             return {
                 linePath: [],
                 markers: [],
-                zoom: 14,
+                zoom: 17,
                 map: {},
                 ployline: {},
                 lineMarkers: [],
                 startMarker: {},
                 endMarker: {},
-                totalLength:0,
-                startEndLen:0
+                totalLength: 0,
+                startEndLen: 0
             }
         },
         created() {
@@ -31,7 +31,7 @@
         mounted() {
             this.map = new AMap.Map('container', {
                 center: [116.40420669, 39.90887389],
-                zoom: 14
+                zoom: 17
             });
         },
 
@@ -106,6 +106,7 @@
                         title: '点'
                     });
                     this.lineMarkers.push(marker);
+                    marker.on("click", this.showMarkerInfo);
                     map.add(marker)
                 });
             },
@@ -128,6 +129,19 @@
 
                 map.add(startMarker);
                 map.add(endMarker);
+
+                startMarker.on("click", this.showMarkerInfo)
+                endMarker.on("click", this.showMarkerInfo)
+            },
+            showMarkerInfo(e) {
+                //构建信息窗体中显示的内容
+                var info = [];
+                info.push("<p class='input-item'>经度 :" + e.lnglat.lng + "</p>");
+                info.push("<p class='input-item'>维度 :" + e.lnglat.lat + "</p></div></div>");
+                let infoWindow = new AMap.InfoWindow({
+                    content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+                });
+                infoWindow.open(this.map, e.lnglat);
             },
         }
 

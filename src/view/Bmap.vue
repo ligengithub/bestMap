@@ -21,14 +21,14 @@
                 lineMarkers: [],
                 startMarker: {},
                 endMarker: {},
-                totalLength:0,
-                startEndLen:0
+                totalLength: 0,
+                startEndLen: 0
             }
         },
 
         mounted() {
             var map = new BMap.Map("container");    // 创建Map实例
-            map.centerAndZoom(new BMap.Point(116.40420669, 39.90887389), 14);  // 初始化地图,设置中心点坐标和地图级别
+            map.centerAndZoom(new BMap.Point(116.40420669, 39.90887389), 17);  // 初始化地图,设置中心点坐标和地图级别
             //添加地图类型控件
             map.addControl(new BMap.MapTypeControl({
                 mapTypes: [
@@ -100,6 +100,21 @@
                     });
                     this.lineMarkers.push(marker);
                     map.addOverlay(marker)
+
+                    marker.addEventListener("click", function (e) {
+                        let opts = {
+                            // width: 100,     // 信息窗口宽度
+                            height: 75,     // 信息窗口高度
+                        };
+                        let infoWindow = new BMap.InfoWindow(
+                            "<div>" +
+                            "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
+                            "<p class='input-item'>维度 :" + e.point.lng + "</p>" +
+                            "</div>", opts);  // 创建信息窗口对象
+
+                        this.map.openInfoWindow(infoWindow, p); //开启信息窗口
+                    });
+
                 });
             },
             plotStartEndMarker(map, start, end) {
@@ -117,6 +132,32 @@
 
                 map.addOverlay(startMarker);
                 map.addOverlay(endMarker);
+
+
+                this.startMarker.addEventListener("click", function (e) {
+                    let opts = {
+                        width: 100,     // 信息窗口宽度
+                        height: 75,     // 信息窗口高度
+                    };
+                    let infoWindow = new BMap.InfoWindow("<div>" +
+                        "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
+                        "<p class='input-item'>维度 :" + e.point.lng + "</p>" +
+                        "</div>", opts);  // 创建信息窗口对象
+
+                    this.map.openInfoWindow(infoWindow, start); //开启信息窗口
+                });
+                this.endMarker.addEventListener("click", function (e) {
+                    let opts = {
+                        width: 100,     // 信息窗口宽度
+                        height: 75,     // 信息窗口高度
+                    };
+                    let infoWindow = new BMap.InfoWindow("<div>" +
+                        "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
+                        "<p class='input-item'>维度 :" + e.point.lng + "</p>" +
+                        "</div>", opts);  // 创建信息窗口对象
+
+                    this.map.openInfoWindow(infoWindow, end); //开启信息窗口
+                });
             },
         }
     }

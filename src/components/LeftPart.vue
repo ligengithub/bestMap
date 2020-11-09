@@ -4,7 +4,7 @@
             <el-radio-group v-model="mapRadio" size="mini" @change="changeMap">
                 <el-radio-button label='1'>高德</el-radio-button>
                 <el-radio-button label='2'>百度</el-radio-button>
-<!--                <el-radio-button label='3'>google</el-radio-button>-->
+                <!--                <el-radio-button label='3'>google</el-radio-button>-->
             </el-radio-group>
         </div>
         <div class="left-item">
@@ -40,18 +40,11 @@
                             class="el-icon-upload el-icon--right"></i>
                     </el-button>
                 </el-upload>
+                <el-button class="m-l-10 m-t-10" type="primary" size="small"
+                           @click="downTemplate">下载模板<i
+                        class="el-icon-download el-icon--right"></i>
+                </el-button>
             </div>
-
-        </div>
-        <div class="left-item row-flex-mid">
-            <el-button class="m-l-10 m-t-10" type="primary" size="small"
-                       @click="downTemplate">下载模板<i
-                    class="el-icon-download el-icon--right"></i>
-            </el-button>
-            <el-button class="m-t-10" type="primary" size="small"
-                       @click="downTemplate">预览excel格式<i
-                    class="el-icon-view el-icon--right"></i>
-            </el-button>
         </div>
 
         <!--        <div class="left-item">-->
@@ -227,12 +220,13 @@
 
             // 下载模板
             downTemplate() {
-                alert("还没做好哦,请下载模板")
-                // let a = document.createElement('a');
-                // a.href = '/temp/gpsTemplate.xlsx';
-                // a.download = "gps数据导入模板";
-                // a.click();
+                let a = document.createElement('a');
+                a.href = '/temp/gpsTemplate.xlsx';
+                a.download = "gps数据导入模板";
+                a.click();
             },
+
+
             plotLineByString() {
                 if (this.linePath.length > 0) {
                     this.clearMarkAndLine()
