@@ -4,8 +4,21 @@
             <el-radio-group v-model="mapRadio" size="mini" @change="changeMap">
                 <el-radio-button label='1'>高德</el-radio-button>
                 <el-radio-button label='2'>百度</el-radio-button>
-                <el-radio-button label='3'>google</el-radio-button>
+<!--                <el-radio-button label='3'>google</el-radio-button>-->
             </el-radio-group>
+        </div>
+        <div class="left-item">
+            <div class="radio-group">
+                <el-radio v-model="locationType" label="1">WGS84</el-radio>
+                <el-radio v-model="locationType" label="2">GCJ02</el-radio>
+                <el-radio v-model="locationType" label="3">BD09</el-radio>
+            </div>
+            <div title="坐标系说明" name="2">
+                <P class="detail-text">WGS84:</label> 大地坐标系，如果您的经纬度是硬件直接输出的经纬度请选择此选项</P>
+                <P class="detail-text">GCJ02: 火星坐标系，高德，google国内，腾讯 均使用此坐标系</P>
+                <P class="detail-text">BD09: 百度坐标系，百度在火星坐标系上又经过一次加密</P>
+                <P class="detail-text" style="font-weight: initial">注意: 输入的数据是什么坐标系就选择什么坐标系，一般硬件输出的坐标使用的都是WGS84坐标系</P>
+            </div>
         </div>
 
         <div class="left-item">
@@ -71,7 +84,7 @@
                     <el-input
                             class="input-text"
                             type="textarea"
-                            :rows="12"
+                            :rows="8"
                             placeholder="格式如下 :  112.59982,31.197446, 113.58782,32.196446, 114.57682,33.195446, 115.56582,34.194446, 116.55482,35.193446, 117.54382,36.192446"
                             v-model="gpsString">
                     </el-input>
@@ -114,13 +127,16 @@
 <script>
     import EventBus from '../event_bus'
     import XLSX from 'xlsx'
-    import {calculateLineDistance} from "../util/util";
+    import {bd09togcj02, calculateLineDistance, gcj02tobd09, transLinePath, wgs84togcj02} from "../util/util";
 
     export default {
 
         name: "LeftPart",
         data() {
             return {
+                detailInfoFlag: false,
+                // 坐标系类型
+                locationType: '2',
                 mapRadio: '1',
                 //输入的gpsString
                 gpsString: '',
@@ -192,15 +208,9 @@
                         this.linePath.push(temp)
                     });
 
-                    let gpsData = {
-                        center: this.linePath[0],
-                        linePath: this.linePath,
-                        zoom: 17,
-                    };
-                    console.log(gpsData);
-                    EventBus.$emit("gpsData", gpsData);
-                    this.totalLength = this.getPathLen(this.linePath);
-                    this.startEndLen = this.getStartEndLen(this.linePath);
+                    let emitData = this.getEmitData(this.linePath);
+                    this.getAnalysResult(this.linePath);
+                    this.sendMessageToMap(emitData)
                 }
             },
             // 校验文件类型
@@ -224,7 +234,7 @@
                 // a.click();
             },
             plotLineByString() {
-                if (this.linePath.length>0){
+                if (this.linePath.length > 0) {
                     this.clearMarkAndLine()
                 }
 
@@ -247,19 +257,13 @@
                 for (let i = 0; i < longitudes.length; i++) {
                     points.push([longitudes[i], latitudes[i]])
                 }
-
-                let gpsData = {
-                    center: points[0],
-                    linePath: points,
-                    zoom: 17,
-                };
                 // console.log(gpsData)
-                setTimeout(()=>{
-                    EventBus.$emit("gpsData", gpsData);
-                    this.linePath = points;
-                    this.totalLength = this.getPathLen(points);
-                    this.startEndLen = this.getStartEndLen(points);
-                },100);
+                this.linePath = points;
+                let emitData = this.getEmitData(this.linePath);
+                this.getAnalysResult(this.linePath);
+                setTimeout(() => {
+                    this.sendMessageToMap(emitData);
+                }, 100);
 
             },
             //清除输入
@@ -291,11 +295,54 @@
                 let distance = calculateLineDistance(path[0], path[path.length - 1]).toFixed(2);
                 return distance;
             },
-            initData(){
+            initData() {
                 this.linePath = [];
                 this.totalLength = 0;
                 this.startEndLen = 0;
-            }
+            },
+
+            // 将元数据发送给地图子组件
+            sendMessageToMap(gpsData) {
+                EventBus.$emit("gpsData", gpsData);
+            },
+            // 解析数据
+            getAnalysResult(linePath) {
+                this.totalLength = this.getPathLen(linePath);
+                this.startEndLen = this.getStartEndLen(linePath);
+            },
+            getEmitData(linePath) {
+                // 坐标系转化
+                let type = this.getTargetLocationType();
+                let result = transLinePath(linePath, type);
+                let gpsData = {
+                    center: result[0],
+                    linePath: result,
+                    zoom: 17,
+                };
+                return gpsData;
+            },
+            getTargetLocationType() {
+                if (this.locationType === '1' && this.mapRadio === '1') {
+                    // 硬件坐标系转 转 火星坐标系
+                    return 1;
+                } else if (this.locationType === '1' && this.mapRadio === '2') {
+                    // 硬件坐标系转百度坐标系
+                    return 2
+                } else if (this.locationType === '2' && this.mapRadio === '1') {
+                    // 火星坐标系转高德 不操作
+                    return 0;
+                } else if (this.locationType === '2' && this.mapRadio === '2') {
+                    // 火星坐标系转百度坐标系
+                    return 3
+                } else if (this.locationType === '3' && this.mapRadio === '1') {
+                    // 百度坐标系转高德坐标系
+                    return 4
+                } else if (this.locationType === '3' && this.mapRadio === '2') {
+                    // 百度转百度，不转
+                    return 0
+                }
+            },
+
         },
 
     }
@@ -316,7 +363,7 @@
     }
 
     .align-left {
-        padding-left: 1rem;
+        padding-left: 4rem;
         text-align: start;
     }
 
@@ -355,6 +402,24 @@
 
     .m-t-10 {
         margin-top: 10px;
+    }
+
+    .radio-group {
+        display: flex;
+        justify-content: center;
+        padding-top: 5px;
+    }
+
+    .radio-group > label {
+        margin-right: 4px;
+    }
+
+    .detail-text {
+        /*text-indent: 2rem;*/
+        width: 210px;
+        font-size: x-small;
+        font-weight: 1;
+        margin: 5px auto;
     }
 
 

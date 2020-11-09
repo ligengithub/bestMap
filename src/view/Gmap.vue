@@ -35,7 +35,6 @@
         },
         watch: {
             gpsData(data) {
-                console.log("gpaDATA-----------", data);
                 this.linePath = data.linePath;
                 // let center = new BMap.Point(parseFloat(this.linePath[0][0]), parseFloat(this.linePath[0][1]));
                 let center = {};
@@ -76,7 +75,6 @@
             },
 
             plotLine(map, path) {
-                console.log(path)
                 let polyline = new google.maps.Polyline(
                     {
                         path: path,
