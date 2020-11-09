@@ -109,7 +109,7 @@
                         let infoWindow = new BMap.InfoWindow(
                             "<div>" +
                             "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
-                            "<p class='input-item'>维度 :" + e.point.lng + "</p>" +
+                            "<p class='input-item'>维度 :" + e.point.lat + "</p>" +
                             "</div>", opts);  // 创建信息窗口对象
 
                         this.map.openInfoWindow(infoWindow, p); //开启信息窗口
@@ -141,7 +141,7 @@
                     };
                     let infoWindow = new BMap.InfoWindow("<div>" +
                         "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
-                        "<p class='input-item'>维度 :" + e.point.lng + "</p>" +
+                        "<p class='input-item'>维度 :" + e.point.lat + "</p>" +
                         "</div>", opts);  // 创建信息窗口对象
 
                     this.map.openInfoWindow(infoWindow, start); //开启信息窗口
@@ -153,7 +153,7 @@
                     };
                     let infoWindow = new BMap.InfoWindow("<div>" +
                         "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
-                        "<p class='input-item'>维度 :" + e.point.lng + "</p>" +
+                        "<p class='input-item'>维度 :" + e.point.lat + "</p>" +
                         "</div>", opts);  // 创建信息窗口对象
 
                     this.map.openInfoWindow(infoWindow, end); //开启信息窗口
