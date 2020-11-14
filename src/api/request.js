@@ -28,14 +28,14 @@ const codeMessage = {
 
 export const throwMessage = (res, sMsg=true) => {
 	return res.then((data) => {
-		if (data.code === '8001') {
-			sMsg && Message.success(`${data.msg}`);
-		} else {
-			Message.error(`${data.msg}`);
-		}
+		// if (data.code === '8001') {
+		// 	sMsg && Message.success(`${data.msg}`);
+		// } else {
+		// 	// Message.error(`${data.msg}`);
+		// }
 		return data;
 	}).catch((data) => {
-		Message.error(`${data.message}`);
+		// Message.error(`${data.message}`);
 		return data;
 	});
 };
