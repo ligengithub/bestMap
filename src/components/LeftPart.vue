@@ -121,6 +121,8 @@
     import EventBus from '../event_bus'
     import XLSX from 'xlsx'
     import {bd09togcj02, calculateLineDistance, gcj02tobd09, transLinePath, wgs84togcj02} from "../util/util";
+    import {addRecord} from '../api/service/recordServices'
+    import {throwMessage} from '../api/request';
 
     export default {
 
@@ -150,6 +152,12 @@
 
         mounted() {
             console.log("mounte")
+            let data = {};
+            let result = addRecord(data);
+            throwMessage(result, false).then((data = {}) => {
+                console.log("111111111111111111", data)
+            })
+
         },
         methods: {
             changeMap() {
