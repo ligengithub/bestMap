@@ -9,5 +9,9 @@ import axios from './../request';
 export const addRecord = (data) => {
     return axios.post('/api/record/add', {data});
 };
+export const getRecordCnt = (data) => {
+    return axios.get('/api/record/getRecordCount');
+};
+
 
 
