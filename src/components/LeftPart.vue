@@ -153,10 +153,11 @@
         mounted() {
             console.log("mounte")
             let data = {};
+            // 页面刷新的时候记录
             let result = addRecord(data);
-            throwMessage(result, false).then((data = {}) => {
-                console.log("111111111111111111", data)
-            })
+            // throwMessage(result, false).then((data = {}) => {
+            //     console.log("111111111111111111", data)
+            // })
 
         },
         methods: {
