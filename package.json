@@ -4,7 +4,8 @@
   "scripts": {
     "start": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "analyz": "set NODE_ENV=production && set npm_config_report=true && npm run dist"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -23,6 +24,7 @@
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-service": "^4.0.0",
     "url-loader": "^4.1.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack-bundle-analyzer": "^4.1.0"
   }
 }

@@ -1,5 +1,7 @@
 const path = require('path');
 const {name} = require('./package');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 
 function resolve(dir) {
     return path.join(__dirname, dir);
@@ -48,6 +50,9 @@ module.exports = {
     },
     // 自定义webpack配置
     configureWebpack: {
+        plugins: [
+            new BundleAnalyzerPlugin()
+        ],
         devtool: 'source-map',
         resolve: {
             alias: {
