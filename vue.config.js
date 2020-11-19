@@ -65,5 +65,9 @@ module.exports = {
             libraryTarget: 'umd',
             jsonpFunction: `webpackJsonp_${name}`,
         },
+        externals:{
+            'vue': 'Vue',
+            'element-ui': 'ELEMENT',
+        }
     },
 };
