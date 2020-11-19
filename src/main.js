@@ -14,7 +14,8 @@ import VueRouter from "vue-router";
 
 // cdn
 import ELEMENT from 'element-ui';
-Vue.use(ELEMENT);
+
+Vue.use(ELEMENT, {size: 'small', zIndex: 3000});
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {

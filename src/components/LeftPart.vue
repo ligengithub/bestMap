@@ -40,6 +40,9 @@
                             class="el-icon-upload el-icon--right"></i>
                     </el-button>
                 </el-upload>
+
+            </div>
+            <div style="margin-left: 2rem">
                 <el-button class="m-l-10 m-t-10" type="primary" size="small"
                            @click="downTemplate">下载模板<i
                         class="el-icon-download el-icon--right"></i>
