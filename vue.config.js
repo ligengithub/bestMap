@@ -68,6 +68,7 @@ module.exports = {
         externals:{
             'vue': 'Vue',
             'element-ui': 'ELEMENT',
+            'xlsx': 'XLSX'
         }
     },
 };

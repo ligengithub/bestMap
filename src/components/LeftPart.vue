@@ -119,7 +119,7 @@
 
 <script>
     import EventBus from '../event_bus'
-    import XLSX from 'xlsx'
+    // import XLSX from 'xlsx'
     import {bd09togcj02, calculateLineDistance, gcj02tobd09, transLinePath, wgs84togcj02} from "../util/util";
     import {addRecord, getRecordCnt} from '../api/service/recordServices'
     import {throwMessage} from '../api/request';
