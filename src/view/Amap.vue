@@ -6,6 +6,7 @@
     import point from '../assets/marker.png'
     import pointStart from '../assets/start.png'
     import pointEnd from '../assets/end.png'
+    import {gcj02towgs84} from "../util/util";
 
     export default {
         name: "Amap",
@@ -14,6 +15,7 @@
         data() {
             return {
                 linePath: [],
+                realLinePath: [],
                 markers: [],
                 zoom: 17,
                 map: {},
@@ -40,16 +42,13 @@
             gpsData(data) {
                 console.log("gpaDATA")
                 this.linePath = data.linePath;
+                this.realLinePath = data.realLinePath;
                 this.map.setCenter(this.linePath[0])
                 this.plotLineAndMarker(this.map, this.linePath);
             },
             clearMapFlag(data) {
                 if (data.flag) {
                     this.map.clearMap();
-                    // this.map.remove(this.startMarker);
-                    // this.map.remove(this.endMarker);
-                    // this.map.remove(this.lineMarkers);
-                    // this.map.remove(this.ployline);
                 }
             }
         },
@@ -106,7 +105,7 @@
                         title: '点'
                     });
                     this.lineMarkers.push(marker);
-                    marker.on("click", this.showMarkerInfo);
+                    marker.on("click", ()=>this.showMarkerInfo(p,this.realLinePath[index]));
                     map.add(marker)
                 });
             },
@@ -130,18 +129,23 @@
                 map.add(startMarker);
                 map.add(endMarker);
 
-                startMarker.on("click", this.showMarkerInfo)
-                endMarker.on("click", this.showMarkerInfo)
+                startMarker.on("click", ()=>this.showMarkerInfo(start,this.realLinePath[0]));
+                endMarker.on("click", ()=>this.showMarkerInfo(end, this.realLinePath[this.realLinePath.length - 1]));
             },
-            showMarkerInfo(e) {
+            showMarkerInfo(mapPoint, realPoint) {
                 //构建信息窗体中显示的内容
                 var info = [];
-                info.push("<p class='input-item'>经度 :" + e.lnglat.lng + "</p>");
-                info.push("<p class='input-item'>维度 :" + e.lnglat.lat + "</p></div></div>");
+                info.push("<p class='input-item'>当前地图坐标系:</p>");
+                info.push("<p class='input-item'>经度 :" + mapPoint.lng + "</p>");
+                info.push("<p class='input-item'>维度 :" + mapPoint.lat + "</p>");
+
+                info.push("<p class='input-item'>录入数据坐标系:</p>");
+                info.push("<p class='input-item'>经度 :" + realPoint[0] + "</p>");
+                info.push("<p class='input-item'>维度 :" + realPoint[1] + "</p>");
                 let infoWindow = new AMap.InfoWindow({
                     content: info.join("")  //使用默认信息窗体框样式，显示信息内容
                 });
-                infoWindow.open(this.map, e.lnglat);
+                infoWindow.open(this.map,mapPoint);
             },
         }
 
@@ -152,8 +156,4 @@
 
 <style scoped>
 
-    /*canvas{*/
-    /*    width: auto !important;*/
-    /*    max-width: none !important;*/
-    /*}*/
 </style>

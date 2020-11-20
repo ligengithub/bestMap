@@ -122,7 +122,7 @@
 
 <script>
     import EventBus from '../event_bus'
-    // import XLSX from 'xlsx'
+    import XLSX from 'xlsx'
     import {bd09togcj02, calculateLineDistance, gcj02tobd09, transLinePath, wgs84togcj02} from "../util/util";
     import {addRecord, getRecordCnt} from '../api/service/recordServices'
     import {throwMessage} from '../api/request';
@@ -254,7 +254,7 @@
                 let latitudes = [];
                 let points = [];
                 data.forEach((data, index) => {
-                    index % 2 === 0 ? longitudes.push(data) : latitudes.push(data);
+                    index % 2 === 0 ? longitudes.push(data.trim()) : latitudes.push(data.trim());
                 });
                 if (longitudes.length !== latitudes.length) {
                     this.$message.error("请检查输入，经纬度必须成对出现");
@@ -323,6 +323,7 @@
                 let gpsData = {
                     center: result[0],
                     linePath: result,
+                    realLinePath: linePath,
                     zoom: 17,
                 };
                 return gpsData;

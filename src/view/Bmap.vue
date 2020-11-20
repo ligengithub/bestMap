@@ -6,6 +6,7 @@
     import point from '../assets/marker.png'
     import pointStart from '../assets/start.png'
     import pointEnd from '../assets/end.png'
+    import {bd09togcj02, bd09towgs84} from "../util/util";
 
     export default {
         name: "Bmap",
@@ -14,6 +15,7 @@
         data() {
             return {
                 linePath: [],
+                realLinePath: [],
                 markers: [],
                 zoom: 14,
                 map: {},
@@ -45,6 +47,7 @@
             gpsData(data) {
                 console.log("gpaDATA-----------", data);
                 this.linePath = data.linePath;
+                this.realLinePath = data.realLinePath;
                 let center = new BMap.Point(parseFloat(this.linePath[0][0]), parseFloat(this.linePath[0][1]));
                 this.map.setCenter(center);
                 this.plotLineAndMarker(this.map, this.linePath);
@@ -52,10 +55,6 @@
             clearMapFlag(data) {
                 console.log("clearMap", data);
                 if (data.flag) {
-                    // this.map.removeOverlay(this.startMarker);
-                    // this.map.removeOverlay(this.endMarker);
-                    // this.map.removeOverlay(this.lineMarkers);
-                    // this.map.removeOverlay(this.ployline);
                     this.map.clearOverlays();
                 }
             }
@@ -85,6 +84,7 @@
                 map.addOverlay(polyline);
             },
             plotMarker(map, path) {
+                let _this = this;
                 let markers = [];
                 if (path.length <= 2) {
                     return
@@ -104,12 +104,16 @@
                     marker.addEventListener("click", function (e) {
                         let opts = {
                             // width: 100,     // 信息窗口宽度
-                            height: 75,     // 信息窗口高度
+                            height: 220,     // 信息窗口高度
                         };
                         let infoWindow = new BMap.InfoWindow(
                             "<div>" +
+                            "<p class='input-item'>当前地图坐标系：</p>" +
                             "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
                             "<p class='input-item'>维度 :" + e.point.lat + "</p>" +
+                            "<p class='input-item'>录入数据坐标系：</p>" +
+                            "<p class='input-item'>经度 :" + _this.realLinePath[index][0] + "</p>" +
+                            "<p class='input-item'>维度 :" + _this.realLinePath[index][1] + "</p>" +
                             "</div>", opts);  // 创建信息窗口对象
 
                         this.map.openInfoWindow(infoWindow, p); //开启信息窗口
@@ -118,6 +122,7 @@
                 });
             },
             plotStartEndMarker(map, start, end) {
+                let _this = this;
                 var startIcon = new BMap.Icon(pointStart, new BMap.Size(32, 48));
                 var endIcon = new BMap.Icon(pointEnd, new BMap.Size(32, 48));
 
@@ -136,24 +141,32 @@
 
                 this.startMarker.addEventListener("click", function (e) {
                     let opts = {
-                        width: 100,     // 信息窗口宽度
-                        height: 75,     // 信息窗口高度
+                        width: 80,     // 信息窗口宽度
+                        height: 220,     // 信息窗口高度
                     };
                     let infoWindow = new BMap.InfoWindow("<div>" +
+                        "<p class='input-item'>当前地图坐标系：</p>" +
                         "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
                         "<p class='input-item'>维度 :" + e.point.lat + "</p>" +
+                        "<p class='input-item'>录入数据坐标系：</p>" +
+                        "<p class='input-item'>经度 :" + _this.realLinePath[0][0] + "</p>" +
+                        "<p class='input-item'>维度 :" + _this.realLinePath[0][1] + "</p>" +
                         "</div>", opts);  // 创建信息窗口对象
 
                     this.map.openInfoWindow(infoWindow, start); //开启信息窗口
                 });
                 this.endMarker.addEventListener("click", function (e) {
                     let opts = {
-                        width: 100,     // 信息窗口宽度
-                        height: 75,     // 信息窗口高度
+                        width: 80,     // 信息窗口宽度
+                        height: 220,     // 信息窗口高度
                     };
                     let infoWindow = new BMap.InfoWindow("<div>" +
+                        "<p class='input-item'>当前地图坐标系：</p>" +
                         "<p class='input-item'>经度 :" + e.point.lng + "</p>" +
                         "<p class='input-item'>维度 :" + e.point.lat + "</p>" +
+                        "<p class='input-item'>录入数据坐标系：</p>" +
+                        "<p class='input-item'>经度 :" + _this.realLinePath[_this.realLinePath.length - 1][0] + "</p>" +
+                        "<p class='input-item'>维度 :" + _this.realLinePath[_this.realLinePath.length - 1][1] + "</p>" +
                         "</div>", opts);  // 创建信息窗口对象
 
                     this.map.openInfoWindow(infoWindow, end); //开启信息窗口

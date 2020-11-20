@@ -32,6 +32,18 @@ export const bd09togcj02 = (bd_lon, bd_lat) => {
 };
 
 /**
+ * 百度坐标系 (BD-09) 与 大地坐标系 (wgs-84)的转换
+ * 即 百度 转 谷歌、高德
+ * @param bd_lon
+ * @param bd_lat
+ * @returns {*[]}
+ */
+export const bd09towgs84 = (bd_lon, bd_lat) => {
+    let bd09togcj02 = this.bd09togcj02(bd_lon, bd_lat);
+    return gcj02towgs84(bd09togcj02[0], bd09togcj02[1]);
+};
+
+/**
  * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换
  * 即谷歌、高德 转 百度
  * @param lng
@@ -86,8 +98,8 @@ export const gcj02towgs84 = (lng, lat) => {
     if (outOfChina(lng, lat)) {
         return [lng, lat]
     } else {
-        var dlat = this.transformlat(lng - 105.0, lat - 35.0);
-        var dlng = this.transformlng(lng - 105.0, lat - 35.0);
+        var dlat = transformlat(lng - 105.0, lat - 35.0);
+        var dlng = transformlng(lng - 105.0, lat - 35.0);
         var radlat = lat / 180.0 * PI;
         var magic = Math.sin(radlat);
         magic = 1 - ee * magic * magic;
