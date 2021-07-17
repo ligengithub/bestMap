@@ -3,6 +3,7 @@ import App from './App.vue'
 
 import routes from "./router/route";
 import VueRouter from "vue-router";
+import less from 'less'
 
 // 普通方式引入
 // import 'element-ui/lib/theme-chalk/index.css';
@@ -23,7 +24,7 @@ VueRouter.prototype.push = function push(location) {
 };
 
 
-Vue.use(VueRouter);
+Vue.use(VueRouter).use(less);
 
 const router = new VueRouter({routes});
 

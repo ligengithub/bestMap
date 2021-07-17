@@ -5,9 +5,10 @@
             </Header>
         </div>
         <div class="middle">
-            <LeftPart></LeftPart>
-            <router-view :gpsData="gpsData" :clearMapFlag="clearMapFlag"></router-view>
-            <RightPart></RightPart>
+<!--            <LeftPart></LeftPart>-->
+<!--            <router-view :gpsData="gpsData" :clearMapFlag="clearMapFlag"></router-view>-->
+<!--            <RightPart></RightPart>-->
+            <Main></Main>
         </div>
         <div>
             <Bottom>
@@ -23,11 +24,12 @@
     import Header from "./components/Header";
     import RightPart from "./components/RightPart";
     import EventBus from "./event_bus";
+    import Main from "./view/Main";
 
 
     export default {
         name: "App",
-        components: {RightPart, LeftPart, Bottom, Header, EventBus},
+        components: {RightPart, LeftPart, Bottom, Header, EventBus,Main},
         data() {
             return {
                 gpsData: {},
@@ -53,12 +55,19 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 5px;
+        /*margin-top: 5px;*/
     }
 
     .home {
         /*padding: 5px;*/
-        background: #ffffff;
+    }
+
+    html{
+        height: 100%;
+    }
+    body{
+        height: 100%;
+        background: #dedede;
     }
 
     .middle {
