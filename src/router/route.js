@@ -3,6 +3,8 @@ import Amap from "../view/Amap";
 import Gmap from "../view/Gmap";
 import Main from "../view/Main";
 import Map from "../view/Map"
+import GoodLucky from "../view/GoodLucky";
+import PdfToWord from "../view/PdfToWord";
 
  const routes = [
     // 动态路径参数 以冒号开头
@@ -26,6 +28,14 @@ import Map from "../view/Map"
         path: '/map/google',
         component: Gmap
     },
+     {
+         path: '/goodLucky',
+         component: GoodLucky
+     },
+     {
+         path: '/pdfToWord',
+         component: PdfToWord
+     },
 ];
 
 

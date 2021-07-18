@@ -58,7 +58,7 @@
                 return array;
             },
             getRandomDeg() {
-                let deg = (Math.random() > 0.5 ? '' : '-') + Math.ceil(Math.random() * 30);
+                let deg = (Math.random() > 0.5 ? '' : '-') + Math.ceil(Math.random() * 360);
                 console.log(deg)
                return "rotate("+deg+"deg)"
             },
@@ -94,9 +94,9 @@
         cursor: pointer;
         transform-style: preserve-3d;
         transform-origin: 0 30% 0;
-        transition: left 1s ease-in-out,
-        top 1s ease-in-out,
-        transform 1s ease-in-out;
+        transition: left 1.5s ease-in-out,
+        top 1.5s ease-in-out,
+        transform 1.5s ease-in-out;
 
         img {
             width: 240px;
@@ -111,5 +111,6 @@
             color: #a7a2a0;
             margin: 5px 0 0 0;
         }
+        z-index: 0;
     }
 </style>

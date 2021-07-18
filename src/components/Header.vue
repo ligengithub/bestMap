@@ -11,8 +11,15 @@
                     MAPTOOL
                 </a>
             </div>
-            <div class="nav-item">一夜暴富</div>
-            <div class="nav-item">个人中心</div>
+            <div class="nav-item">
+                <a href="/#/goodLucky">
+                    GOOD LUCKY
+                </a></div>
+            <div class="nav-item">
+                <a href="/#/pdfToWord">
+                    PDF TO WORD
+                </a>
+            </div>
         </div>
         <input v-if="this.$route.path=='/'" class="input" placeholder="Search" @keyup.enter="searchAction"></input>
     </div>
@@ -72,15 +79,18 @@
         width: 460px;
     }
 
-    .header{
+    .header {
         height: 90%;
-        .nav{
+
+        .nav {
             display: flex;
             height: 100%;
-            float: right!important;
+            float: right !important;
             margin-right: -15px;
+            z-index: 200;
         }
-        .nav-item{
+
+        .nav-item {
             width: 200px;
             height: 100%;
             text-transform: uppercase;
@@ -91,13 +101,14 @@
             color: white;
             padding: 20px;
         }
+
         a {
             text-transform: uppercase;
             font-size: 12px;
             line-height: 20px;
             font-weight: 800;
             letter-spacing: 1px;
-            color: white;
+            color: gray;
             text-decoration: none;
         }
     }
