@@ -2,6 +2,7 @@ import Bmap from "../view/Bmap";
 import Amap from "../view/Amap";
 import Gmap from "../view/Gmap";
 import Main from "../view/Main";
+import Map from "../view/Map"
 
  const routes = [
     // 动态路径参数 以冒号开头
@@ -11,7 +12,7 @@ import Main from "../view/Main";
      },
      {
          path: '/map/amap',
-         component: Amap
+         component: Map
      },
     {
         path: '/map/baidu',

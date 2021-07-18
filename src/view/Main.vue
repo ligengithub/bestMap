@@ -51,7 +51,7 @@
                 for (let i = 0; i < 20; i++) {
                     array.push({
                         top:100+ Math.random() * 420 + "px",
-                        left: Math.random() * 971 + "px",
+                        left: Math.random() * 800 +Math.random() * 800 + "px",
                         transform: this.getRandomDeg()
                     })
                 }

@@ -5,20 +5,12 @@
             </Header>
         </div>
         <div class="middle">
-<!--            <LeftPart></LeftPart>-->
-<!--            <router-view :gpsData="gpsData" :clearMapFlag="clearMapFlag"></router-view>-->
-<!--            <RightPart></RightPart>-->
-            <Main></Main>
-        </div>
-        <div class="bottom">
-            <Bottom>
-            </Bottom>
+            <router-view :gpsData="gpsData" :clearMapFlag="clearMapFlag"></router-view>
         </div>
     </div>
 </template>
 
 <script>
-    // import GpsTool from "./components/GpsTool";
     import LeftPart from "./components/LeftPart";
     import Bottom from "./components/Bottom";
     import Header from "./components/Header";
