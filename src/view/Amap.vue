@@ -6,6 +6,7 @@
     import point from '../assets/marker.png'
     import pointStart from '../assets/start.png'
     import pointEnd from '../assets/end.png'
+    import EventBus from "../event_bus";
     import {gcj02towgs84} from "../util/util";
 
     export default {
@@ -50,7 +51,8 @@
                 if (data.flag) {
                     this.map.clearMap();
                 }
-            }
+            },
+
         },
 
         methods: {
@@ -155,5 +157,9 @@
 </script>
 
 <style scoped>
+    .mapContainer{
+        border-radius: 20px;
+        width: 90%;
+    }
 
 </style>

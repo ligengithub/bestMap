@@ -165,15 +165,8 @@
         },
         methods: {
             changeMap() {
-                console.log(this.mapRadio);
                 this.initData();
-                if (this.mapRadio === '2') {
-                    this.$router.push({path: "/map/baidu"})
-                } else if (this.mapRadio === '3') {
-                    this.$router.push({path: "/map/google"})
-                } else {
-                    this.$router.push({path: "/map/gaode"})
-                }
+                EventBus.$emit("mapRadio",this.mapRadio)
             },
 
             // 删除上传的文件

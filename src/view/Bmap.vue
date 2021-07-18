@@ -177,5 +177,9 @@
 </script>
 
 <style scoped>
+    .mapContainer{
+        border-radius: 20px;
+        width: 90%;
+    }
 
 </style>

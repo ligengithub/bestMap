@@ -1,16 +1,14 @@
 <template>
     <div class="mapbody">
         <LeftPart></LeftPart>
-        <!--            <Amap></Amap>-->
-        <!--            <router-view :gpsData="gpsData" :clearMapFlag="clearMapFlag"></router-view>-->
-<!--        <RightPart></RightPart>-->
-        <Amap></Amap>
-        <Bmap></Bmap>
+<!--        <div class="">-->
+            <Amap v-if="this.mapRadio == 1" :gpsData="gpsData" :clearMapFlag="clearMapFlag"></Amap>
+            <Bmap v-if="this.mapRadio == 2" :gpsData="gpsData" :clearMapFlag="clearMapFlag"></Bmap>
+<!--        </div>-->
     </div>
 </template>
 
 <script>
-    // import GpsTool from "./components/GpsTool";
     import LeftPart from "../components/LeftPart";
     import Bottom from "../components/Bottom";
     import Header from "../components/Header";
@@ -26,7 +24,8 @@
         data() {
             return {
                 gpsData: {},
-                clearMapFlag: {}
+                clearMapFlag: {},
+                mapRadio:1
             }
         },
         mounted() {
@@ -36,7 +35,9 @@
             EventBus.$on("clearMapFlag", (val) => {
                 this.clearMapFlag = val;
             });
-
+            EventBus.$on("mapRadio", (val) => {
+                this.mapRadio = val;
+            });
         }
     }
 </script>
@@ -46,6 +47,7 @@
     .mapbody{
         display: flex;
     }
+
 
 
 

@@ -71,14 +71,4 @@
         height: 80%;
     }
 
-    .bottom{
-        height: 10%;
-    }
-
-    .mapContainer {
-        border-radius: 10px;
-        flex: 1;
-        margin: 3px;
-        height: 750px;
-    }
 </style>
