@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <div>
+        <div class="header">
             <Header>
             </Header>
         </div>
@@ -10,7 +10,7 @@
 <!--            <RightPart></RightPart>-->
             <Main></Main>
         </div>
-        <div>
+        <div class="bottom">
             <Bottom>
             </Bottom>
         </div>
@@ -59,19 +59,28 @@
     }
 
     .home {
-        /*padding: 5px;*/
+        /*height: -webkit-fill-available;*/
+       height: 80%;
     }
 
     html{
         height: 100%;
+        touch:auto
     }
     body{
         height: 100%;
         background: #dedede;
     }
+    .header{
+        height: 10%;
+    }
 
     .middle {
-        display: flex;
+        height: 80%;
+    }
+
+    .bottom{
+        height: 10%;
     }
 
     .mapContainer {

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div v-for="(item,i) in images" class="img-figure" :style="styles[i]" @click="reRandom">
             <img :src="item.url" alt=""/>
         </div>
@@ -27,10 +27,11 @@
             }
         },
         created() {
+            // setInterval(()=>this.styles= this.getRandomStyle(),5000)
+
 
         },
         mounted() {
-            console.log()
         },
 
         // 监测 data 变化
@@ -49,8 +50,8 @@
                 // 20.
                 for (let i = 0; i < 20; i++) {
                     array.push({
-                        top: Math.random() * 920 + "px",
-                        left: Math.random() * 1271 + "px",
+                        top:100+ Math.random() * 420 + "px",
+                        left: Math.random() * 971 + "px",
                         transform: this.getRandomDeg()
                     })
                 }
@@ -74,6 +75,10 @@
 
 <style scoped lang="less">
 
+    .container{
+        height: inherit;
+    }
+
 
     .img-figure {
         position: absolute;
@@ -88,10 +93,10 @@
         background: #fff;
         cursor: pointer;
         transform-style: preserve-3d;
-        transform-origin: 0 50% 0;
-        transition: left 2s ease-in-out,
-        top 2s ease-in-out,
-        transform 2s ease-in-out;
+        transform-origin: 0 30% 0;
+        transition: left 1s ease-in-out,
+        top 1s ease-in-out,
+        transform 1s ease-in-out;
 
         img {
             width: 240px;
